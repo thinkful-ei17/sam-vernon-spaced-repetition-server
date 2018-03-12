@@ -7,10 +7,13 @@ mongoose.Promise = global.Promise;
 const UserSchema = mongoose.Schema({
     username: { type: String, required: true},
     password: { type: String, required: true},
-    name: {
-        firstName : {type: String},
-        lastName: {type: String}
-    },
+    firstName : {type: String},
+    lastName: {type: String},
+    wordSets: [{
+      name: { type: String, required: true},
+      data: { type: Object, required: true},
+      mastery: { type: Number, required: true},
+    }]
 });
 
 
