@@ -24,6 +24,10 @@ app.use(
 
 app.use(cors());
 
+app.get('/', (req, res) => {
+  res.send('Tutor home.');
+});
+
 function runServer(port = PORT) {
     const server = app
         .listen(port, () => {
