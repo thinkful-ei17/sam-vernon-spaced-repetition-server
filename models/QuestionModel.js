@@ -5,11 +5,11 @@ mongoose.Promise = global.Promise;
 
 
 const QuestionSchema = mongoose.Schema({
-    word: { type: String, required: true},
-    prompt: { type: String, required: true},
-    correctAnswer: {type: String},
+    word: { type: String, required: true },
+    prompt: { type: String, required: true },
+    correctAnswer: {type: String },
     incorrectAnswers: [
-      {type: String}
+      {type: String } 
     ]
 };
 
