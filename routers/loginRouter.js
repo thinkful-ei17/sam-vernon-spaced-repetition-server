@@ -9,7 +9,6 @@ const loginRouter = express.Router();
 
 const { JWT_SECRET } = require('../config');
 const { JWT_EXPIRY } = require('../config');
-
 const { localStrategy, jwtStrategy } = require('../strategies/strategies');
 const User = require('../models/UserModel');
 
@@ -35,7 +34,7 @@ loginRouter.post('/login', localAuth, (req, res) => {
 
 loginRouter.post('/refresh', jwtAuth, (req, res) => {
     const authToken = createAuthToken(req.user);
-    
+
     res.json({authToken});
 });
 
