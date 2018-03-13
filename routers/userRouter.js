@@ -9,5 +9,10 @@ passport.use(jwtStrategy);
 
 const jwtAuth = passport.authenticate('jwt', {session: false});
 
+userRouter.get('/', jwtAuth, (req, res) => {
+
+
+});
+
 
 module.exports = userRouter;
