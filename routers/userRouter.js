@@ -28,11 +28,7 @@ userRouter.get('/', jwtAuth, (req, res) => {
 userRouter.get('/question', jwtAuth, (req, res) => {
 
     const { wordSet } = req.query;
-
-    console.log('wordSet', wordSet);
     const { id } = req.user;
-
-    console.log('ID', id);
 
     databaseCalls.getQuestion(wordSet, id)
         .then((data) => {
@@ -48,7 +44,19 @@ userRouter.get('/question', jwtAuth, (req, res) => {
 
 // when user answers back to question
 userRouter.post('/response', jwtAuth, (req, res) => {
-    res.send('template!');
+    const { wordSet } = req.query;
+    const { answer } = req.body;
+    const { id } = req.user;
+
+    databaseCalls.response(wordSet, answer, id)
+        .then((data) => {
+            console.log(data);
+            res.json(data);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.send(err.message);
+        });
 
 });
 

@@ -70,7 +70,39 @@ module.exports = {
     'getWordSets': function(id) {
 
     },
-    'response': function(id) {
+    'response': function(wordSet, answer, id) {
+        return UserModel.findById(id)
+            .then((data) => {
+
+                const foundWordSet = data.wordSets.find((set) => set.name === wordSet);
+
+                if (!foundWordSet) {
+                    throw new Error('No such word-set.');
+                }
+
+                const decision = answer;
+
+                /*
+                  algo: down here
+
+                */
+
+                console.log('DECISION', decision);
+                console.log(foundWordSet);
+                if (decision) {
+                  console.log('CONDITION PASSED')
+                    // increment
+                    const oldQuestion = foundWordSet.data.removeHead();
+
+                    foundWordSet.data.insertLast(oldQuestion);
+                } else {
+                    // decrement
+                    const oldQuestion = foundWordSet.data.removeHead();
+
+                    foundWordSet.data.insertLast(oldQuestion);
+                }
+            });
+
 
     },
     'createWordSet': function(name, description, questions, id) {

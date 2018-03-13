@@ -171,6 +171,23 @@ class LinkedList {
         console.log(list);
         return;
     }
+
+    removeHead() {
+        if (this.head === null) {
+            return null;
+        } else if (this.head.next === null) {
+            let oldHead = this.head;
+
+            this.head = null;
+            return oldHead.value;
+        }
+
+        let oldHead = this.head;
+
+        this.head = this.head.next;
+        return oldHead.value;
+
+    }
 }
 
 class _Node {
@@ -236,6 +253,50 @@ function findLast(linkedList) {
 
     console.log('Last node in list:', current);
     return current;
+}
+
+function insertAt(position, newValue) {
+    if(!this.head) {
+        return null;
+    }
+
+    if (position === 0) {
+        this.insertFirst(newValue);
+        return;
+    }
+
+    let counter = 0;
+    let current = this.head;
+    let previous = this.head;
+
+    while(current !== null) {
+        if(counter === position) {
+            previous.next = new _Node(newValue, current);
+            return;
+        }
+        previous = current;
+        current = current.next;
+        counter++;
+    }
+    console.log('Position was invalid');
+    return;
+}
+
+function removeHead() {
+    if (this.head === null) {
+        return null;
+    } else if (this.head.next === null) {
+        let oldHead = this.head;
+
+        this.head = null;
+        return oldHead.value;
+    }
+
+    let oldHead = this.head;
+
+    this.head = this.head.next;
+    return oldHead.value;
+
 }
 
 module.exports = LinkedList;

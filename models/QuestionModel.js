@@ -11,6 +11,7 @@ const QuestionSchema = mongoose.Schema({
     'incorrectAnswers': [
         { 'type': String }
     ],
+    'definition': { 'type': String, 'required': true },
     'nValue': { 'type': Number, 'required': true }
 });
 
