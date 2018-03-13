@@ -10,7 +10,6 @@ const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db-mongoose');
 
 const loginRouter = require('./routers/loginRouter');
-const wordSetRouter = require('./routers/wordSetRouter');
 const userRouter = require('./routers/userRouter');
 
 const app = express();
@@ -31,7 +30,6 @@ app.use(
 );
 
 app.use('/', loginRouter);
-app.use('/wordSet', wordSetRouter);
 app.use('/user', userRouter);
 
 

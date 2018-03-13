@@ -18,4 +18,4 @@ PresetWordSetSchema.methods.serialize = function () {
 
 const PresetWordSetModel = mongoose.model('WordSets', PresetWordSetSchema);
 
-module.exports =  PresetWordSetModel ;
+module.exports =  PresetWordSetModel;
