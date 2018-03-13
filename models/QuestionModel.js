@@ -16,6 +16,10 @@ QuestionSchema.methods.serialize = function () {
 
     return {
         id: this._id,
+        word: this.word,
+        prompt: this.prompt,
+        correctAnswer: this.correctAnswer,
+        incorrectAnswers: this.incorrectAnswers
     };
 };
 

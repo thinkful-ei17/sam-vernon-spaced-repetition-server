@@ -12,7 +12,9 @@ PresetWordSetSchema.methods.serialize = function () {
     console.log(this);
 
     return {
-        id: this._id
+        id: this._id,
+        name: this.name,
+        data: this.data
     };
 };
 

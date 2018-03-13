@@ -6,8 +6,8 @@ mongoose.Promise = global.Promise;
 const UserSchema = mongoose.Schema({
     username: { type: String, required: true },
     password: { type: String, required: true },
-    firstName : {type: String },
-    lastName: {type: String },
+    firstName : { type: String },
+    lastName: { type: String },
     wordSets: [{
       name: { type: String, required: true },
       data: { type: Object, required: true },
@@ -33,6 +33,7 @@ UserSchema.methods.serialize = function () {
         password: this.password,
         firstName : this.firstName,
         lastName: this.lastName,
+        wordSets: this.wordSets
     };
 };
 
