@@ -299,4 +299,8 @@ function removeHead() {
 
 }
 
-module.exports = LinkedList;
+module.exports = {
+    LinkedList,
+    removeHead,
+    insertAt
+};

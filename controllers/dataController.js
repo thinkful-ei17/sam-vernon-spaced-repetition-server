@@ -48,11 +48,12 @@ module.exports = {
                 return err;
             });
     },
-    'createQuestion': function(word, prompt, correctAnswer, incorrectAnswers) {
+    'createQuestion': function(word, prompt, correctAnswer, definition, incorrectAnswers) {
         return QuestionModel.create({
             word,
             prompt,
             correctAnswer,
+            definition,
             incorrectAnswers
         })
             .then((data) => {

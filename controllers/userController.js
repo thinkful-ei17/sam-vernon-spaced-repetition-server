@@ -5,7 +5,7 @@ const WordSetModel = require('../models/WordSetModel');
 const QuestionModel = require('../models/QuestionModel');
 
 const dataController = require('./dataController');
-const LinkedList = require('./linkedList');
+const { LinkedList } = require('./linkedList');
 
 const createLinkedListForDataField = function(questions) {
     const linkedList = new LinkedList();
@@ -54,7 +54,10 @@ module.exports = {
                         .then((data) => {
                             console.log('created!?');
                             console.log(data);
-                            return data;
+
+                            let foundWordSet = data.wordSets.find((set) => set.name === wordSet);
+
+                            return foundWordSet.data.head.value;
                         });
 
                 }
@@ -89,6 +92,7 @@ module.exports = {
 
                 console.log('DECISION', decision);
                 console.log(foundWordSet);
+
                 if (decision) {
                   console.log('CONDITION PASSED')
                     // increment

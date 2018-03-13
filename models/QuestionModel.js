@@ -22,6 +22,7 @@ QuestionSchema.methods.serialize = function() {
         'word': this.word,
         'prompt': this.prompt,
         'correctAnswer': this.correctAnswer,
+        'definition': this.definition,
         'incorrectAnswers': this.incorrectAnswers
     };
 };

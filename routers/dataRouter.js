@@ -31,9 +31,9 @@ dataRouter.get('/wordSets', (req, res) => {
 
 dataRouter.post('/createQuestion', (req, res) => {
 
-    const {word, prompt, correctAnswer, incorrectAnswers} = req.body;
+    const {word, prompt, correctAnswer, definition, incorrectAnswers } = req.body;
 
-    databaseCalls.createQuestion(word, prompt, correctAnswer, incorrectAnswers).then(data => {
+    databaseCalls.createQuestion(word, prompt, correctAnswer, definition, incorrectAnswers).then(data => {
         console.log(data);
         res.json(data);
     }).catch(err => {

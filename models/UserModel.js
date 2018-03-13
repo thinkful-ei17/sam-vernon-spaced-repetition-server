@@ -35,6 +35,7 @@ UserSchema.methods.serialize = function() {
         'username': this.username,
         'firstName': this.firstName,
         'lastName': this.lastName,
+        'email': this.email,
         'wordSets': this.wordSets
     };
 };
