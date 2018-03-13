@@ -5,8 +5,8 @@ module.exports = {
     getQuestions: function () {
         return QuestionModel.find()
             .then(data => {
-                console.log(data.serialize());
-                return data;
+                console.log(data);
+                return data.map(question => question.serialize());
             })
             .catch(err => {
                 console.log(err);
@@ -17,7 +17,7 @@ module.exports = {
         return WordSetModel.find()
             .then(data => {
                 console.log(data);
-                return data.serialize();
+                return data.map(wordSet => wordSet.serialize());
             })
             .catch(err => {
                 console.log(err);

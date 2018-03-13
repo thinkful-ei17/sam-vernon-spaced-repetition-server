@@ -7,12 +7,11 @@ const QuestionSchema = mongoose.Schema({
     prompt: { type: String, required: true },
     correctAnswer: { type: String },
     incorrectAnswers: [
-      { type: String }
+        { type: String }
     ]
 });
 
 QuestionSchema.methods.serialize = function () {
-    console.log(this);
 
     return {
         id: this._id,
