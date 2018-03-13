@@ -10,6 +10,7 @@ const UserSchema = mongoose.Schema({
     'password': { 'type': String, 'required': true },
     'firstName': { 'type': String },
     'lastName': { 'type': String },
+    'email': { 'type': String, 'required': true },
     'wordSets': [ {
         'name': { 'type': String, 'required': true },
         'data': { 'type': Object, 'required': true },
