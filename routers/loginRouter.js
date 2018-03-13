@@ -21,6 +21,8 @@ passport.use(jwtStrategy);
 const jwtAuth = passport.authenticate('jwt', { 'session': false });
 const localAuth = passport.authenticate('local', { 'session': false });
 
+const databaseCalls = require('../controllers/userController');
+
 const createAuthToken = function(user) {
     return jwt.sign({ user }, JWT_SECRET, {
         'subject': user.username,
@@ -123,7 +125,14 @@ loginRouter.post('/register', (req, res) => {
             });
         })
         .then((user) => { // not using nodemon to watch changes keep eye on log!
-            return res.status(201).location(`/users/${user.id}`).json(user.serialize());
+
+            return databaseCalls.getQuestion('Not Popular SAT Words', user.id)
+                .then((data) => {
+                    console.log('PRESET: FOUNDATION');
+                    console.log(data);
+                    return res.status(201).location(`/users/${user.id}`).json(user.serialize());
+                });
+
         })
         .catch((err) => {
             console.log(err);
