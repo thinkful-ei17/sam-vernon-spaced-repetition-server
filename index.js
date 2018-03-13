@@ -4,6 +4,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const bodyParser = require('body-parser');
 
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db-mongoose');
@@ -12,12 +13,6 @@ const loginRouter = require('./routers/loginRouter');
 
 const app = express();
 
-app.use(
-    morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {
-        skip: (req, res) => process.env.NODE_ENV === 'test'
-    })
-);
-
 // app.use(
 //     cors({
 //         origin: CLIENT_ORIGIN
@@ -25,6 +20,15 @@ app.use(
 // );
 
 app.use(cors());
+app.use(bodyParser.json());
+
+app.use(
+  morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {
+        skip: (req, res) => process.env.NODE_ENV === 'test'
+    })
+);
+
+app.use('/', loginRouter);
 
 app.get('/', (req, res) => {
   res.send('Tutor home.');
