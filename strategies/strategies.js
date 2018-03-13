@@ -5,7 +5,6 @@ const { JWT_SECRET } = require('../config');
 
 const User = require('../models/UserModel');
 
-
 const localStrategy = new LocalStrategy((username, password, done) => {
     let user;
     User
