@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 
 const dataRouter = express.Router();
@@ -43,13 +45,13 @@ dataRouter.post('/createQuestion', (req, res) => {
 
 dataRouter.post('/createWordSet', (req, res) => {
 
-    const {name, data} = req.body;
+    const { name, data, description } = req.body;
 
-    databaseCalls.createWordSet(name, data).then(data => {
+    databaseCalls.createWordSet(name, data, description).then((data) => {
         console.log(data);
         res.json(data);
-    }).catch(err => {
-        console.log(err);
+    }).catch((err) => {
+        console.log('Router error: ', err);
         res.send(err);
     });
 

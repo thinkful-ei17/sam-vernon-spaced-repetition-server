@@ -1,3 +1,5 @@
+'use strict';
+
 require('dotenv').config();
 const express = require('express');
 const passport = require('passport');
@@ -6,35 +8,53 @@ const userRouter = express.Router();
 
 const { jwtStrategy } = require('../strategies/strategies');
 
-const jwtAuth = passport.authenticate('jwt', {session: false} );
+const jwtAuth = passport.authenticate('jwt', { 'session': false } );
 
 passport.use(jwtStrategy);
 
-//get all data about user! even the password [insert evil laugh]
+const databaseCalls = require('../controllers/userController');
+
+// get all data about user! even the password [insert evil laugh]
 userRouter.get('/', jwtAuth, (req, res) => {
 
-  console.log(req.headers);
-  const { user } = req;
-  res.json(user);
+    console.log(req.headers);
+    const { user } = req;
+
+    res.json(user);
 
 });
 
-//when user requests for a new question!
+// when user requests for a new question!
 userRouter.get('/question', jwtAuth, (req, res) => {
-  res.send('template!');
 
+    const { wordSet } = req.query;
+
+    console.log('wordSet', wordSet);
+    const { id } = req.user;
+
+    console.log('ID', id);
+
+    databaseCalls.getQuestion(wordSet, id)
+        .then((data) => {
+            console.log(data);
+            res.json(data);
+        })
+        .catch((err) => {
+            console.log('Router error', err);
+            res.send(err.message);
+        });
 
 });
 
-//when user answers back to question
+// when user answers back to question
 userRouter.post('/response', jwtAuth, (req, res) => {
-  res.send('template!');
+    res.send('template!');
 
 });
 
-//get specific wordSet to quiz on!
+// get specific wordSet to quiz on!
 userRouter.get('/wordSet', jwtAuth, (req, res) => {
-  res.send('template!');
+    res.send('template!');
 
 });
 
