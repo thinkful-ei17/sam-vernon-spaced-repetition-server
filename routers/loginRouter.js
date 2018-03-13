@@ -126,7 +126,7 @@ loginRouter.post('/register', (req, res) => {
         })
         .then((user) => { // not using nodemon to watch changes keep eye on log!
 
-            return databaseCalls.getQuestion('Not Popular SAT Words', user.id)
+            return databaseCalls.getQuestion('Foundation', user.id)
                 .then((data) => {
                     console.log('PRESET: FOUNDATION');
                     console.log(data);
