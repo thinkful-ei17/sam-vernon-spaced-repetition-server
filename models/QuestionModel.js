@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-
-const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 
@@ -11,7 +9,7 @@ const QuestionSchema = mongoose.Schema({
     incorrectAnswers: [
       { type: String }
     ]
-};
+});
 
 QuestionSchema.methods.serialize = function () {
     console.log(this);

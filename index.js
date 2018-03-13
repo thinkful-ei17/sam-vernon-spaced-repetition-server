@@ -11,6 +11,8 @@ const { dbConnect } = require('./db-mongoose');
 
 const loginRouter = require('./routers/loginRouter');
 const userRouter = require('./routers/userRouter');
+const dataRouter = require('./routers/dataRouter');
+
 
 const app = express();
 
@@ -31,6 +33,7 @@ app.use(
 
 app.use('/', loginRouter);
 app.use('/user', userRouter);
+app.use('/data', dataRouter);
 
 
 app.get('/', (req, res) => {

@@ -1,7 +1,7 @@
 const express = require('express');
 
 const dataRouter = express.Router();
-const databaseCalls = require('../controller/dataController');
+const databaseCalls = require('../controllers/dataController');
 
 dataRouter.get('/questions', (req, res) => {
 
@@ -14,7 +14,7 @@ dataRouter.get('/wordSets', (req, res) => {
 });
 
 dataRouter.post('/createQuestion', (req, res) => {
-
+  
 
 });
 
