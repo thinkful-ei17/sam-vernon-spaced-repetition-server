@@ -28,13 +28,14 @@ const createAuthToken = function(user) {
 };
 
 loginRouter.post('/login', localAuth, (req, res) => {
-    console.log(JWT_SECRET);
     const authToken = createAuthToken(req.user.serialize());
+
     res.json({authToken});
 });
 
 loginRouter.post('/refresh', jwtAuth, (req, res) => {
     const authToken = createAuthToken(req.user);
+    
     res.json({authToken});
 });
 
