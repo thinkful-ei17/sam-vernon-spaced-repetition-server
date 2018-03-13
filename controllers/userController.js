@@ -27,7 +27,7 @@ module.exports = {
         return UserModel.findById(id)
             .then((data) => {
 
-                const foundWordSet = data.wordSets.find((set) => set === wordSet);
+                const foundWordSet = data.wordSets.find((set) => set.name === wordSet);
 
                 if (!foundWordSet) {
                     // get the wordSet
@@ -55,12 +55,16 @@ module.exports = {
                             console.log('created!?');
                             console.log(data);
                             return data;
-                        })
+                        });
 
                 }
 
-                return data.serialize();
-            })
+                // else: if foundWordSet was actually found
+                // its a linkedList w/ a head, nodes & values
+                return foundWordSet.data.head.value;
+
+                // return data.serialize();
+            });
 
     },
     'getWordSets': function(id) {
