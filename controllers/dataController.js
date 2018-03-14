@@ -86,7 +86,7 @@ module.exports = {
     'deleteWordSets': function() {
         return WordSetModel.find()
             .then((data) => {
-                data = ;
+                console.log(data); 
                 return data.save();
             })
             .catch((err) => {
