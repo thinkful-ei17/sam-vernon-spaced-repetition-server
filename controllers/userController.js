@@ -102,7 +102,7 @@ module.exports = {
                     const oldQuestion = foundWordSet.data.head.value;
 
                     // increment oldQ nValue since answer was correct
-                    oldQuestion.nValue = oldQuestion.nValue + 1;
+                    oldQuestion.nValue = oldQuestion.nValue * 2;
 
                     // LinkedList aka head = updatedVersion & im removing the top
                     foundWordSet.data.head = removeHead(foundWordSet.data.head);
@@ -121,7 +121,7 @@ module.exports = {
                     const oldQuestion = foundWordSet.data.head.value;
 
                     // decrement oldQ nValue since answer was incorrect
-                    oldQuestion.nValue = oldQuestion.nValue - 1;
+                    oldQuestion.nValue = 1;
 
                     // LinkedList aka head = updatedVersion & im removing the top
                     foundWordSet.data.head = removeHead(foundWordSet.data.head);

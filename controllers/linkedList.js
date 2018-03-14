@@ -208,18 +208,18 @@ const insertAt = function(newValue, head) {
         return null;
     }
 
-    if (position === 0) {
-        this.insertFirst(newValue);
-        return;
-    }
-
-    let counter = 0;
+    /*
+      we are assuming list/wordSet wont be empty
+    */
     let current = tempHead;
-    let previous = tempHead;
 
     while(current !== null) {
-        if(counter === position) {
-            previous.next = new _Node(newValue, current);
+
+        // compare nValues of ea. question
+        if(current.value.nValue <= newValue.nValue) {
+            let oldNext = curr.next();
+
+            curr.next = new _Node(newValue, oldNext);
             return;
         }
         previous = current;
