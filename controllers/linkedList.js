@@ -216,9 +216,13 @@ const insertAt = function(newValue, head) {
     while(current.next !== null) {
 
         // compare nValues of ea. question
-        // [1,56,67] >= 23
+        // [1,56,67] <= 23 && 23 <= [...] 
         // curr-nValue is bigger/equal than newNode-nValue
-        if(current.value.nValue >= newValue.nValue) {
+
+        let firstStatement = current.value.nValue <= newValue.nValue;
+        let secondStatement = newValue.nValue <= current.next.value.nValue;
+
+        if(firstStatement && secondStatement) {
             let oldNext = current.next;
 
             current.next = new _Node(newValue, oldNext);
