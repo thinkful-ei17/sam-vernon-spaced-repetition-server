@@ -17,10 +17,17 @@ const databaseCalls = require('../controllers/userController');
 // get all data about user! even the password [insert evil laugh]
 userRouter.get('/', jwtAuth, (req, res) => {
 
-    console.log(req.headers);
-    const { user } = req;
+    const { id } = req.user;
 
-    res.json(user);
+    databaseCalls.getUser(id)
+        .then((data) => {
+            console.log(data);
+            res.json(data);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.send(err.message);
+        });
 
 });
 
@@ -64,6 +71,21 @@ userRouter.post('/response', jwtAuth, (req, res) => {
 userRouter.get('/wordSet', jwtAuth, (req, res) => {
     res.send('template!');
 
+});
+
+userRouter.delete('/wordSets', jwtAuth, (req, res) => {
+
+    const { id } = req.user;
+
+    databaseCalls.deleteAllWordSets(id)
+        .then((data) => {
+            console.log(data);
+            res.json(data);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.send(err.message);
+        });
 });
 
 module.exports = userRouter;

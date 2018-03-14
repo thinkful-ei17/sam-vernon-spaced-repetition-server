@@ -10,7 +10,7 @@ const UserSchema = mongoose.Schema({
     'password': { 'type': String, 'required': true },
     'firstName': { 'type': String },
     'lastName': { 'type': String },
-    'email': { 'type': String, 'required': true },
+    'email': { 'type': String },
     'wordSets': [ {
         'name': { 'type': String, 'required': true },
         'data': { 'type': Object, 'required': true },
@@ -36,7 +36,15 @@ UserSchema.methods.serialize = function() {
         'firstName': this.firstName,
         'lastName': this.lastName,
         'email': this.email,
-        'wordSets': this.wordSets
+        'wordSets': this.wordSets.map(( aSet ) => {
+            return {
+                'id': aSet._id,
+                'name': aSet.name,
+                'data': aSet.data,
+                'description': aSet.description,
+                'mastery': aSet.mastery
+            };
+        })
     };
 };
 

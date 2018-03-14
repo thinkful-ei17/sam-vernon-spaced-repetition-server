@@ -230,41 +230,58 @@ const insertLast = function(item, head) {
     let tempHead = head;
 
     if(tempHead === null) {
-        this.insertFirst(item);
+        tempHead = new Node(item, null);
     } else {
         let current = tempHead;
 
         while (current.next !== null) {
+            console.log('traversing...');
+            console.log('next', current.value);
             current = current.next;
         }
-        
+
         current.next = new _Node(item, null);
     }
+
+    return tempHead;
 }
 
 const removeHead = function(head) {
-    console.log('head given', head);
-    let tempHead = head;
 
-    if (tempHead === null) {
+    if (head === null) {
+        return head;
+    } else if (head.next === null) {
         return null;
-    } else if (tempHead.next === null) {
-        let oldHead = head;
-
-        tempHead = null;
-        return oldHead.value;
     }
 
-    let oldHead = tempHead;
+    let thisHead = head;
 
-    tempHead = tempHead.next;
-    return oldHead.value;
+    thisHead = head.next;
+    return thisHead;
 
+};
+
+const display = function(head) {
+    let tempHead = head;
+
+    if (!tempHead) {
+        return null;
+    }
+
+    const list = [];
+    let current = tempHead;
+
+    while (current !== null) {
+        list.push(current.value);
+        current = current.next;
+    }
+    console.log(list);
 };
 
 module.exports = {
     LinkedList,
     removeHead,
     insertAt,
-    insertLast
+    insertLast,
+    display
 };

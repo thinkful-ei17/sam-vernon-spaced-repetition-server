@@ -5,7 +5,7 @@ const WordSetModel = require('../models/WordSetModel');
 const QuestionModel = require('../models/QuestionModel');
 
 const dataController = require('./dataController');
-const { LinkedList, removeHead, insertAt } = require('./linkedList');
+const { LinkedList, removeHead, insertAt, insertLast, display } = require('./linkedList');
 
 const createLinkedListForDataField = function(questions) {
     const linkedList = new LinkedList();
@@ -19,6 +19,12 @@ const createLinkedListForDataField = function(questions) {
 };
 
 module.exports = {
+    'getUser': function(id) {
+        return UserModel.findById(id)
+            .then((data) => {
+                return data.serialize();
+            });
+    },
     'getQuestion': function(wordSet, id) {
         let description;
         let name;
@@ -80,33 +86,77 @@ module.exports = {
                 const foundWordSet = data.wordSets.find((set) => set.name === wordSet);
 
                 if (!foundWordSet) {
-                    throw new Error('No such word-set.');
-                }
+                    throw new Error('No such word-set on user.');
 
-                const decision = answer;
+                // logic to remove answered Question from foundWordSet & switch to a new one
+                } else if (answer) {
+                    console.log('======= ID: ', foundWordSet.id);
 
-                /*
-                  algo: down here
-
-                */
-
-                console.log('DECISION', decision);
-                console.log(foundWordSet);
-
-                if (decision) {
-                    console.log('CONDITION PASSED')
+                    console.log('===== before changes =====');
+                    display(foundWordSet.data.head);
+                    console.log('===== before changes =====');
                     // increment
-                    const oldQuestion = removeHead(foundWordSet.data);
 
-                    insertLast(oldQuestion);
-                    console.log(foundWordSet.data);
+                    // saving oldQ for insertLast
+                    const oldQuestion = foundWordSet.data.head.value;
+
+                    // LinkedList aka head = updatedVersion & im removing the top
+                    foundWordSet.data.head = removeHead(foundWordSet.data.head);
+
+                    // LinkedList aka head = updatedVersion & im adding to the bottom
+                    foundWordSet.data.head = insertLast(oldQuestion, foundWordSet.data.head);
+
+                    console.log('===== after changes - if true =====');
+                    display(foundWordSet.data.head);
+                    console.log('===== after changes - if true =====');
+
                 } else {
                     // decrement
-                    const oldQuestion = removeHead(foundWordSet.data);
 
-                    insertLast(oldQuestion);
-                    console.log(foundWordSet.data);
+                    // saving oldQ for insertLast
+                    const oldQuestion = foundWordSet.data.head.value;
+
+                    // LinkedList aka head = updatedVersion & im removing the top
+                    foundWordSet.data.head = removeHead(foundWordSet.data.head);
+
+                    // LinkedList aka head = updatedVersion & im adding to the bottom
+                    foundWordSet.data.head = insertLast(oldQuestion, foundWordSet.data.head);
+
+                    console.log('===== after changes if false =====');
+                    display(foundWordSet.data.head);
+                    console.log('===== after changes if false =====');
                 }
+
+                /*
+                  replacing oldWordSet w/ changes made in foundWordSet
+                  > making/returning A NEW OBJECT IS IMPORTANT.
+                  > [return foundWordSet] DOES NOT WORK
+                  >> mongoose wont detect changes. even though logs show it.
+                  > making a new arr w/ [...newWordSets] doesnt help.
+                */
+                const newWordSets = data.wordSets.map((aSet) => {
+                    console.log('bool statement: ', aSet.id === foundWordSet.id);
+                    if (aSet.id === foundWordSet.id) {
+                        console.log('Found it, so Im replacing it.');
+
+                        const { name, data, description, mastery, id } = foundWordSet;
+
+                        return {
+                            id,
+                            name,
+                            data,
+                            description,
+                            mastery
+                        };
+                    }
+
+
+                });
+
+                data.wordSets = newWordSets;
+                console.log('NEW DATA.WORDSETS', JSON.stringify(newWordSets, null, 2))
+
+                return data.save();
             });
 
 
@@ -130,6 +180,13 @@ module.exports = {
             .catch((err) => {
                 console.log(err.message);
                 return err;
+            });
+    },
+    'deleteAllWordSets': function(id) {
+        return UserModel.findById(id)
+            .then((data) => {
+                data.wordSets = [];
+                return data.save();
             });
     }
 };
