@@ -82,5 +82,24 @@ module.exports = {
                 console.log(err);
                 return err;
             });
+    },
+    'deleteWordSets': function() {
+        return WordSetModel.find()
+            .then((data) => {
+                data = ;
+                return data.save();
+            })
+            .catch((err) => {
+                console.log(err);
+                return err;
+            });
+    },
+    'deleteQuestions': function() {
+        return QuestionModel.find()
+            .then((data) => {
+                data = [];
+
+                return data.save();
+            });
     }
 };

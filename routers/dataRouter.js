@@ -7,10 +7,10 @@ const databaseCalls = require('../controllers/dataController');
 
 dataRouter.get('/questions', (req, res) => {
 
-    databaseCalls.getQuestions().then(data => {
+    databaseCalls.getQuestions().then((data) => {
         console.log(data);
         res.json(data);
-    }).catch(err => {
+    }).catch((err) => {
         console.log(err);
         res.send(err);
     });
@@ -19,10 +19,10 @@ dataRouter.get('/questions', (req, res) => {
 
 dataRouter.get('/wordSets', (req, res) => {
 
-    databaseCalls.getWordSets().then(data => {
+    databaseCalls.getWordSets().then((data) => {
         console.log(data);
         res.json(data);
-    }).catch(err => {
+    }).catch((err) => {
         console.log(err);
         res.send(err);
     });
@@ -33,10 +33,10 @@ dataRouter.post('/createQuestion', (req, res) => {
 
     const { word, prompt, correctAnswer, definition, nValue, incorrectAnswers } = req.body;
 
-    databaseCalls.createQuestion(word, prompt, correctAnswer, definition, nValue, incorrectAnswers).then(data => {
+    databaseCalls.createQuestion(word, prompt, correctAnswer, definition, nValue, incorrectAnswers).then((data) => {
         console.log(data);
         res.json(data);
-    }).catch(err => {
+    }).catch((err) => {
         console.log(err);
         res.send(err);
     });
@@ -54,6 +54,34 @@ dataRouter.post('/createWordSet', (req, res) => {
         console.log('Router error: ', err);
         res.send(err);
     });
+
+});
+
+dataRouter.delete('/questions', (req, res) => {
+
+    // not tested
+    databaseCalls.deleteQuestions()
+        .then((data) => {
+            console.log(data);
+            res.json(data);
+        }).catch((err) => {
+            console.log('Router error: ', err);
+            res.send(err.message);
+        });
+
+});
+
+dataRouter.delete('/wordSets', (req, res) => {
+    // not tested
+
+    databaseCalls.deleteWordSets()
+        .then((data) => {
+            console.log(data);
+            res.json(data);
+        }).catch((err) => {
+            console.log('Router error: ', err);
+            res.send(err.message);
+        });
 
 });
 

@@ -23,7 +23,8 @@ QuestionSchema.methods.serialize = function() {
         'prompt': this.prompt,
         'correctAnswer': this.correctAnswer,
         'definition': this.definition,
-        'incorrectAnswers': this.incorrectAnswers
+        'incorrectAnswers': this.incorrectAnswers,
+        'nValue': this.nValue
     };
 };
 
