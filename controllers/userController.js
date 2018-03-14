@@ -96,7 +96,6 @@ module.exports = {
                     console.log('===== before changes =====');
                     display(foundWordSet.data.head);
                     console.log('===== before changes =====');
-                    // increment
 
                     // saving oldQ for insertLast
                     const oldQuestion = foundWordSet.data.head.value;
@@ -108,7 +107,7 @@ module.exports = {
                     foundWordSet.data.head = removeHead(foundWordSet.data.head);
 
                     // LinkedList aka head = updatedVersion & im adding to the bottom
-                    foundWordSet.data.head = insertLast(oldQuestion, foundWordSet.data.head);
+                    foundWordSet.data.head = insertAt(oldQuestion, foundWordSet.data.head);
 
                     console.log('===== after changes - if true =====');
                     display(foundWordSet.data.head);
@@ -127,7 +126,7 @@ module.exports = {
                     foundWordSet.data.head = removeHead(foundWordSet.data.head);
 
                     // LinkedList aka head = updatedVersion & im adding to the bottom
-                    foundWordSet.data.head = insertLast(oldQuestion, foundWordSet.data.head);
+                    foundWordSet.data.head = insertAt(oldQuestion, foundWordSet.data.head);
 
                     console.log('===== after changes if false =====');
                     display(foundWordSet.data.head);

@@ -213,21 +213,26 @@ const insertAt = function(newValue, head) {
     */
     let current = tempHead;
 
-    while(current !== null) {
+    while(current.next !== null) {
 
         // compare nValues of ea. question
-        if(current.value.nValue <= newValue.nValue) {
-            let oldNext = curr.next();
+        // [1,56,67] >= 23
+        // curr-nValue is bigger/equal than newNode-nValue
+        if(current.value.nValue >= newValue.nValue) {
+            let oldNext = current.next;
 
-            curr.next = new _Node(newValue, oldNext);
-            return;
+            current.next = new _Node(newValue, oldNext);
+            return tempHead;
         }
-        previous = current;
+
         current = current.next;
-        counter++;
     }
-    console.log('Position was invalid');
-    return;
+
+
+    // if conditions are met; add the end
+    current.next = new _Node(newValue, null);
+
+    return tempHead;
 };
 
 const insertLast = function(item, head) {
