@@ -197,47 +197,50 @@ class _Node {
     }
 }
 
+const _findNthElement = function(position, head) {
+    let thisHead = head;
+
+    for (let i = 0; i < position; i++) {
+        if (thisHead.next) {
+            thisHead = thisHead.next;
+        }
+    }
+
+    return thisHead;
+};
+
 const insertAt = function(newValue, head) {
+
     let tempHead = head;
-    let value = head.value.nValue;
 
-    console.log('TEMPHEAD', tempHead)
-    console.log('VALUE', value)
-
-    if(!tempHead) {
+    if (!tempHead) {
         return null;
     }
 
-    /*
-      we are assuming list/wordSet wont be empty
-    */
-    let current = tempHead;
-
-    while(current.next !== null) {
-
-        // compare nValues of ea. question
-        // [1,56,67] <= 23 && 23 <= [...] 
-        // curr-nValue is bigger/equal than newNode-nValue
-
-        let firstStatement = current.value.nValue <= newValue.nValue;
-        let secondStatement = newValue.nValue <= current.next.value.nValue;
-
-        if(firstStatement && secondStatement) {
-            let oldNext = current.next;
-
-            current.next = new _Node(newValue, oldNext);
-            return tempHead;
-        }
-
-        current = current.next;
+    if (newValue.nValue < 0) {
+        throw new Error('Position error');
     }
 
+    if (newValue.nValue === 0) {
+        let oldHead = tempHead;
 
-    // if conditions are met; add the end
-    current.next = new _Node(newValue, null);
+        tempHead = new _Node(newValue, oldHead);
+
+        return tempHead;
+    }
+
+    // Find the node which we want to insert after
+    const node = _findNthElement(newValue.nValue - 1, tempHead);
+    const newNode = new _Node(newValue, null);
+
+    // oldNode -> new -> oldNodeNEXT
+    newNode.next = node.next;
+    node.next = newNode;
 
     return tempHead;
+
 };
+
 
 const insertLast = function(item, head) {
     let tempHead = head;
@@ -257,7 +260,7 @@ const insertLast = function(item, head) {
     }
 
     return tempHead;
-}
+};
 
 const removeHead = function(head) {
 
