@@ -90,6 +90,7 @@ module.exports = {
 
                 // logic to remove answered Question from foundWordSet & switch to a new one
                 } else if (answer) {
+                    // increment -- answer they gave is right!
                     console.log('======= ID: ', foundWordSet.id);
 
                     console.log('===== before changes =====');
@@ -99,6 +100,9 @@ module.exports = {
 
                     // saving oldQ for insertLast
                     const oldQuestion = foundWordSet.data.head.value;
+
+                    // increment oldQ nValue since answer was correct
+                    oldQuestion.nValue = oldQuestion.nValue + 1;
 
                     // LinkedList aka head = updatedVersion & im removing the top
                     foundWordSet.data.head = removeHead(foundWordSet.data.head);
@@ -111,10 +115,13 @@ module.exports = {
                     console.log('===== after changes - if true =====');
 
                 } else {
-                    // decrement
+                    // decrement -- answer they gave is wrong!
 
                     // saving oldQ for insertLast
                     const oldQuestion = foundWordSet.data.head.value;
+
+                    // decrement oldQ nValue since answer was incorrect
+                    oldQuestion.nValue = oldQuestion.nValue - 1;
 
                     // LinkedList aka head = updatedVersion & im removing the top
                     foundWordSet.data.head = removeHead(foundWordSet.data.head);

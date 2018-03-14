@@ -197,8 +197,12 @@ class _Node {
     }
 }
 
-const insertAt = function(position, newValue, head) {
+const insertAt = function(newValue, head) {
     let tempHead = head;
+    let value = head.value.nValue;
+
+    console.log('TEMPHEAD', tempHead)
+    console.log('VALUE', value)
 
     if(!tempHead) {
         return null;
