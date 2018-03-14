@@ -5,7 +5,7 @@ const WordSetModel = require('../models/WordSetModel');
 const QuestionModel = require('../models/QuestionModel');
 
 const dataController = require('./dataController');
-const { LinkedList, removeHead, insertAt, insertLast, display } = require('./linkedList');
+const { LinkedList, removeHead, insertAt, insertLast, display, giveLength } = require('./linkedList');
 
 const createLinkedListForDataField = function(questions) {
     const linkedList = new LinkedList();
@@ -93,20 +93,20 @@ module.exports = {
                     // increment -- answer they gave is right!
                     console.log('======= ID: ', foundWordSet.id);
 
-                    console.log('===== before changes =====');
-                    display(foundWordSet.data.head);
-                    console.log('===== before changes =====');
+                    // console.log('===== before changes =====');
+                    // display(foundWordSet.data.head);
+                    // console.log('===== before changes =====');
 
                     // saving oldQ for insertLast
                     const oldQuestion = foundWordSet.data.head.value;
 
                     // increment oldQ nValue since answer was correct
-                    oldQuestion.nValue = oldQuestion.nValue * 2;
-                    
+                    const isItBiggerThanLinkedList = oldQuestion.nValue > giveLength(foundWordSet.data.head);
+
+                    oldQuestion.nValue = isItBiggerThanLinkedList ? giveLength(foundWordSet.data.head) : oldQuestion.nValue * 2;
+
                     // increment score of question
                     oldQuestion.score = oldQuestion.score === 100 ? 100 : oldQuestion.score + 1;
-
-                    // cant increase over 100 or under 0
 
                     // LinkedList aka head = updatedVersion & im removing the top
                     foundWordSet.data.head = removeHead(foundWordSet.data.head);
@@ -114,15 +114,21 @@ module.exports = {
                     // LinkedList aka head = updatedVersion & im adding to the bottom
                     foundWordSet.data.head = insertAt(oldQuestion, foundWordSet.data.head);
 
-                    console.log('===== after changes - if true =====');
-                    display(foundWordSet.data.head);
-                    console.log('===== after changes - if true =====');
+                    // check when2change mastery when one oldQuestion reaches a score over 80
+                    if (oldQuestion.score > 80) {
+                        console.log('SCORE BIGGER ============');
+                        this.updateMastery(foundWordSet);
+                    }
+
+                    // console.log('===== after changes - if true =====');
+                    // display(foundWordSet.data.head);
+                    // console.log('===== after changes - if true =====');
 
                 } else {
                     // decrement -- answer they gave is wrong!
-                    console.log('===== before changes =====');
-                    display(foundWordSet.data.head);
-                    console.log('===== before changes =====');
+                    // console.log('===== before changes =====');
+                    // display(foundWordSet.data.head);
+                    // console.log('===== before changes =====');
 
                     // saving oldQ for insertLast
                     const oldQuestion = foundWordSet.data.head.value;
@@ -140,9 +146,14 @@ module.exports = {
                     // LinkedList aka head = updatedVersion & im adding to the bottom
                     foundWordSet.data.head = insertAt(oldQuestion, foundWordSet.data.head);
 
-                    console.log('===== after changes if false =====');
-                    display(foundWordSet.data.head);
-                    console.log('===== after changes if false =====');
+                    // check when2change mastery when one oldQuestion reaches a score over 80
+                    if (oldQuestion.score > 80) {
+                        this.updateMastery(foundWordSet);
+                    }
+
+                    // console.log('===== after changes if false =====');
+                    // display(foundWordSet.data.head);
+                    // console.log('===== after changes if false =====');
                 }
 
                 /*
@@ -172,7 +183,7 @@ module.exports = {
                 });
 
                 user.wordSets = newWordSets;
-                console.log('NEW DATA.WORDSETS', JSON.stringify(newWordSets, null, 2))
+                console.log('NEW DATA.WORDSETS', JSON.stringify(newWordSets, null, 2));
 
                 return user.save();
             });
@@ -206,5 +217,29 @@ module.exports = {
                 user.wordSets = [];
                 return user.save();
             });
+    },
+    'updateMastery': function(wordSet) {
+        console.log('---------------curr mastery: ', wordSet.mastery);
+
+        let total = 0;
+        let mastered = 0;
+        let current = wordSet.data.head;
+
+        // traverse thru data
+        while (current != null) {
+            total += 1;
+
+            console.log('mastery, curr: ', current.value);
+            if(current.value.score > 80) {
+                mastered += 1;
+            }
+
+            current = current.next;
+        }
+
+        console.log('-----------mastered, total----------', mastered, total);
+        wordSet.mastery = (mastered / total).toFixed(3) * 100;
+        console.log('----------wordset mastery', wordSet.mastery);
+
     }
 };

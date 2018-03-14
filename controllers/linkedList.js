@@ -241,7 +241,6 @@ const insertAt = function(newValue, head) {
 
 };
 
-
 const insertLast = function(item, head) {
     let tempHead = head;
 
@@ -294,10 +293,29 @@ const display = function(head) {
     console.log(list);
 };
 
+const giveLength = function(head) {
+    let tempHead = head;
+
+    if (!tempHead) {
+        return null;
+    }
+
+    let counter = 0;
+    let current = tempHead;
+
+    while (current !== null) {
+        counter += 1;
+        current = current.next;
+    }
+
+    return counter;
+};
+
 module.exports = {
     LinkedList,
     removeHead,
     insertAt,
     insertLast,
-    display
+    display,
+    giveLength
 };
