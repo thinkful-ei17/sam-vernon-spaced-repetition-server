@@ -102,6 +102,11 @@ module.exports = {
 
                     // increment oldQ nValue since answer was correct
                     oldQuestion.nValue = oldQuestion.nValue * 2;
+                    
+                    // increment score of question
+                    oldQuestion.score = oldQuestion.score === 100 ? 100 : oldQuestion.score + 1;
+
+                    // cant increase over 100 or under 0
 
                     // LinkedList aka head = updatedVersion & im removing the top
                     foundWordSet.data.head = removeHead(foundWordSet.data.head);
@@ -115,9 +120,16 @@ module.exports = {
 
                 } else {
                     // decrement -- answer they gave is wrong!
+                    console.log('===== before changes =====');
+                    display(foundWordSet.data.head);
+                    console.log('===== before changes =====');
 
                     // saving oldQ for insertLast
                     const oldQuestion = foundWordSet.data.head.value;
+
+                    // decrement score of question
+                    // cant increase over 100 or under 0
+                    oldQuestion.score = oldQuestion.score === 0 ? 0 : oldQuestion.score - 1;
 
                     // decrement oldQ nValue since answer was incorrect
                     oldQuestion.nValue = 1;
@@ -173,7 +185,8 @@ module.exports = {
                     name,
                     'data': createLinkedListForDataField(questions),
                     description,
-                    'mastery': 0
+                    'mastery': 0,
+                    'score': 1
                 };
 
                 console.log('NEWWORDSET', newWordSet);
