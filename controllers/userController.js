@@ -21,8 +21,8 @@ const createLinkedListForDataField = function(questions) {
 module.exports = {
     'getUser': function(id) {
         return UserModel.findById(id)
-            .then((data) => {
-                return data.serialize();
+            .then((user) => {
+                return user.serialize();
             });
     },
     'getQuestion': function(wordSet, id) {
@@ -31,9 +31,9 @@ module.exports = {
         let questions;
 
         return UserModel.findById(id)
-            .then((data) => {
+            .then((user) => {
 
-                const foundWordSet = data.wordSets.find((set) => set.name === wordSet);
+                const foundWordSet = user.wordSets.find((set) => set.name === wordSet);
 
                 if (!foundWordSet) {
                     // get the wordSet
@@ -57,11 +57,11 @@ module.exports = {
                             // create userWordSet
                             return this.createWordSet(name, description, questions, id);
                         })
-                        .then((data) => {
+                        .then((user) => {
                             console.log('created!?');
-                            console.log(data);
+                            console.log(user);
 
-                            let foundWordSet = data.wordSets.find((set) => set.name === wordSet);
+                            let foundWordSet = user.wordSets.find((set) => set.name === wordSet);
 
                             return foundWordSet.data.head.value;
                         });
@@ -81,9 +81,9 @@ module.exports = {
     },
     'response': function(wordSet, answer, id) {
         return UserModel.findById(id)
-            .then((data) => {
+            .then((user) => {
 
-                const foundWordSet = data.wordSets.find((set) => set.name === wordSet);
+                const foundWordSet = user.wordSets.find((set) => set.name === wordSet);
 
                 if (!foundWordSet) {
                     throw new Error('No such word-set on user.');
@@ -134,8 +134,8 @@ module.exports = {
                   >> mongoose wont detect changes. even though logs show it.
                   > making a new arr w/ [...newWordSets] doesnt help.
                 */
-                const newWordSets = data.wordSets.map((aSet) => {
-                    console.log('bool statement: ', aSet.id === foundWordSet.id);
+                const newWordSets = user.wordSets.map((aSet) => {
+                    // console.log('bool statement: ', aSet.id === foundWordSet.id);
                     if (aSet.id === foundWordSet.id) {
                         console.log('Found it, so Im replacing it.');
 
@@ -153,17 +153,16 @@ module.exports = {
 
                 });
 
-                data.wordSets = newWordSets;
+                user.wordSets = newWordSets;
                 console.log('NEW DATA.WORDSETS', JSON.stringify(newWordSets, null, 2))
 
-                return data.save();
+                return user.save();
             });
-
 
     },
     'createWordSet': function(name, description, questions, id) {
         return UserModel.findById(id)
-            .then((data) => {
+            .then((user) => {
                 let newWordSet = {
                     name,
                     'data': createLinkedListForDataField(questions),
@@ -172,10 +171,10 @@ module.exports = {
                 };
 
                 console.log('NEWWORDSET', newWordSet);
-                console.log('response: ', data);
-                data.wordSets = [ ...data.wordSets, newWordSet ];
+                console.log('response: ', user);
+                user.wordSets = [ ...user.wordSets, newWordSet ];
 
-                return data.save();
+                return user.save();
             })
             .catch((err) => {
                 console.log(err.message);
@@ -184,9 +183,9 @@ module.exports = {
     },
     'deleteAllWordSets': function(id) {
         return UserModel.findById(id)
-            .then((data) => {
-                data.wordSets = [];
-                return data.save();
+            .then((user) => {
+                user.wordSets = [];
+                return user.save();
             });
     }
 };
