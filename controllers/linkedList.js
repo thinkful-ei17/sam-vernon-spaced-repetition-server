@@ -197,66 +197,10 @@ class _Node {
     }
 }
 
-function size(linkedList) {
-    if (!linkedList.head) {
-        return null;
-    }
+const insertAt = function(position, newValue, head) {
+    let tempHead = head;
 
-    let counter = 0;
-    let current = linkedList.head;
-
-    while (current !== null) {
-        counter++;
-        current = current.next;
-    }
-    console.log('Number of items in list:', counter);
-    return;
-}
-
-function isEmpty(linkedList) {
-    if (!linkedList.head) {
-        console.log('List is empty');
-        return;
-    }
-    console.log('List is not empty');
-    return;
-}
-
-function findPrevious(linkedList, item) {
-    if (!linkedList.head) {
-        return null;
-    }
-    let current = linkedList.head;
-    let previous = linkedList.head;
-
-    while(current !== null) {
-        if(current.value === item) {
-            console.log('Previous node is:', previous);
-            return previous;
-        }
-        previous = current;
-        current = current.next;
-    }
-    console.log('Invalid item');
-    return;
-}
-
-function findLast(linkedList) {
-    if (!linkedList.head) {
-        return null;
-    }
-    let current = linkedList.head;
-
-    while (current.next !== null) {
-        current = current.next;
-    }
-
-    console.log('Last node in list:', current);
-    return current;
-}
-
-function insertAt(position, newValue) {
-    if(!this.head) {
+    if(!tempHead) {
         return null;
     }
 
@@ -266,8 +210,8 @@ function insertAt(position, newValue) {
     }
 
     let counter = 0;
-    let current = this.head;
-    let previous = this.head;
+    let current = tempHead;
+    let previous = tempHead;
 
     while(current !== null) {
         if(counter === position) {
@@ -280,27 +224,47 @@ function insertAt(position, newValue) {
     }
     console.log('Position was invalid');
     return;
+};
+
+const insertLast = function(item, head) {
+    let tempHead = head;
+
+    if(tempHead === null) {
+        this.insertFirst(item);
+    } else {
+        let current = tempHead;
+
+        while (current.next !== null) {
+            current = current.next;
+        }
+        
+        current.next = new _Node(item, null);
+    }
 }
 
-function removeHead() {
-    if (this.head === null) {
-        return null;
-    } else if (this.head.next === null) {
-        let oldHead = this.head;
+const removeHead = function(head) {
+    console.log('head given', head);
+    let tempHead = head;
 
-        this.head = null;
+    if (tempHead === null) {
+        return null;
+    } else if (tempHead.next === null) {
+        let oldHead = head;
+
+        tempHead = null;
         return oldHead.value;
     }
 
-    let oldHead = this.head;
+    let oldHead = tempHead;
 
-    this.head = this.head.next;
+    tempHead = tempHead.next;
     return oldHead.value;
 
-}
+};
 
 module.exports = {
     LinkedList,
     removeHead,
-    insertAt
+    insertAt,
+    insertLast
 };

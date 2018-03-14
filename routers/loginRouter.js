@@ -132,7 +132,8 @@ loginRouter.post('/register', (req, res) => {
                     console.log(data);
                     return res.status(201).location(`/users/${user.id}`).json(user.serialize());
                 });
-
+            // before adding foundation to all new accounts
+            // return res.status(201).location(`/users/${user.id}`).json(user.serialize());
         })
         .catch((err) => {
             console.log(err);
