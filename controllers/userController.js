@@ -131,11 +131,9 @@ module.exports = {
                     // LinkedList aka head = updatedVersion & im adding to the bottom
                     foundWordSet.data.head = insertAt(oldQuestion, foundWordSet.data.head);
 
-                    // check when2change mastery when one oldQuestion reaches a score over 80
-                    if (oldQuestion.score > masteryChecker) {
-                        console.log('SCORE BIGGER ============');
-                        this.updateMastery(foundWordSet);
-                    }
+                    // always update mastery on wordset!
+                    this.updateMastery(foundWordSet);
+
 
                     // console.log('===== after changes - if true =====');
                     // display(foundWordSet.data.head);
