@@ -255,7 +255,7 @@ module.exports = {
         }
 
         console.log('-----------mastered, total----------', mastered, total);
-        wordSet.mastery = (mastered / total).toFixed(3) * 100;
+        wordSet.mastery = (mastered / total).toFixed(2) * 100;
         console.log('----------wordset mastery', wordSet.mastery);
 
     }
