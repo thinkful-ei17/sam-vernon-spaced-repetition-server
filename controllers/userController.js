@@ -45,8 +45,8 @@ module.exports = {
                             if (aSet.length === 0) {
                                 throw new Error('No such wordset');
                             }
-                            console.log(aSet);
-                            console.log('==========wordSet data===========', aSet[ 0 ]);
+                            // console.log(aSet);
+                            // console.log('==========wordSet data===========', aSet[ 0 ]);
                             name = aSet[ 0 ].name;
                             description = aSet[ 0 ].description;
 
@@ -54,14 +54,14 @@ module.exports = {
                             return dataController.getQuestionsById(aSet[ 0 ].data);
                         })
                         .then((questionsData) => {
-                            console.log(questionsData);
+                            // console.log(questionsData);
                             questions = questionsData;
                             // create userWordSet
                             return this.createWordSet(name, description, questions, id);
                         })
                         .then((user) => {
-                            console.log('created!?');
-                            console.log(user);
+                            // console.log('created!?');
+                            // console.log(user);
 
                             let foundWordSet = user.wordSets.find((set) => set.name === wordSet);
 
@@ -79,7 +79,7 @@ module.exports = {
 
     },
     'getWordSet': function(wordSet, id) {
-        console.log('given name:', wordSet);
+        // console.log('given name:', wordSet);
 
         return UserModel.findById(id)
             .then((user) => {
@@ -108,11 +108,11 @@ module.exports = {
                 // logic to remove answered Question from foundWordSet & switch to a new one
                 } else if (answer) {
                     // increment -- answer they gave is right!
-                    console.log('======= ID: ', foundWordSet.id);
+                    // console.log('======= ID: ', foundWordSet.id);
 
-                    // console.log('===== before changes =====');
+                    // // console.log('===== before changes =====');
                     // display(foundWordSet.data.head);
-                    // console.log('===== before changes =====');
+                    // // console.log('===== before changes =====');
 
                     // saving oldQ for insertLast
                     const oldQuestion = foundWordSet.data.head.value;
@@ -131,19 +131,18 @@ module.exports = {
                     // LinkedList aka head = updatedVersion & im adding to the bottom
                     foundWordSet.data.head = insertAt(oldQuestion, foundWordSet.data.head);
 
-                    // always update mastery on wordset!
+                    // check when2change mastery when one oldQuestion reaches a score over 80
                     this.updateMastery(foundWordSet);
 
-
-                    // console.log('===== after changes - if true =====');
+                    // // console.log('===== after changes - if true =====');
                     // display(foundWordSet.data.head);
-                    // console.log('===== after changes - if true =====');
+                    // // console.log('===== after changes - if true =====');
 
                 } else {
                     // decrement -- answer they gave is wrong!
-                    // console.log('===== before changes =====');
+                    // // console.log('===== before changes =====');
                     // display(foundWordSet.data.head);
-                    // console.log('===== before changes =====');
+                    // // console.log('===== before changes =====');
 
                     // saving oldQ for insertLast
                     const oldQuestion = foundWordSet.data.head.value;
@@ -162,13 +161,11 @@ module.exports = {
                     foundWordSet.data.head = insertAt(oldQuestion, foundWordSet.data.head);
 
                     // check when2change mastery when one oldQuestion reaches a score over 80
-                    if (oldQuestion.score > 80) {
-                        this.updateMastery(foundWordSet);
-                    }
+                    this.updateMastery(foundWordSet);
 
-                    // console.log('===== after changes if false =====');
+                    // // console.log('===== after changes if false =====');
                     // display(foundWordSet.data.head);
-                    // console.log('===== after changes if false =====');
+                    // // console.log('===== after changes if false =====');
                 }
 
                 /*
@@ -179,9 +176,9 @@ module.exports = {
                   > making a new arr w/ [...newWordSets] doesnt help.
                 */
                 const newWordSets = user.wordSets.map((aSet) => {
-                    // console.log('bool statement: ', aSet.id === foundWordSet.id);
+                    // // console.log('bool statement: ', aSet.id === foundWordSet.id);
                     if (aSet.id === foundWordSet.id) {
-                        console.log('Found it, so Im replacing it.');
+                        // console.log('Found it, so Im replacing it.');
 
                         const { name, data, description, mastery, id } = foundWordSet;
 
@@ -198,7 +195,7 @@ module.exports = {
                 });
 
                 user.wordSets = newWordSets;
-                console.log('NEW DATA.WORDSETS', JSON.stringify(newWordSets, null, 2));
+                // console.log('NEW DATA.WORDSETS', JSON.stringify(newWordSets, null, 2));
 
                 return user.save();
             });
@@ -215,14 +212,14 @@ module.exports = {
                     'score': 1
                 };
 
-                console.log('NEWWORDSET', newWordSet);
-                console.log('response: ', user);
+                // console.log('NEWWORDSET', newWordSet);
+                // console.log('response: ', user);
                 user.wordSets = [ ...user.wordSets, newWordSet ];
 
                 return user.save();
             })
             .catch((err) => {
-                console.log(err.message);
+                // console.log(err.message);
                 return err;
             });
     },
