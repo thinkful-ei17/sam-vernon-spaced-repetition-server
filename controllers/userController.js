@@ -115,7 +115,7 @@ module.exports = {
                     foundWordSet.data.head = insertAt(oldQuestion, foundWordSet.data.head);
 
                     // check when2change mastery when one oldQuestion reaches a score over 80
-                    if (oldQuestion.score > 80) {
+                    if (oldQuestion.score > 4) {
                         console.log('SCORE BIGGER ============');
                         this.updateMastery(foundWordSet);
                     }
