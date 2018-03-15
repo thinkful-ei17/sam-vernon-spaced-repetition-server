@@ -230,7 +230,7 @@ module.exports = {
             total += 1;
 
             console.log('mastery, curr: ', current.value);
-            if(current.value.score > 80) {
+            if(current.value.score > 4) {
                 mastered += 1;
             }
 
