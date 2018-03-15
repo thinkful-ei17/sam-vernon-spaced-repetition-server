@@ -3,6 +3,17 @@ const WordSetModel = require('../models/WordSetModel');
 const QuestionModel = require('../models/QuestionModel');
 
 module.exports = {
+    'getQuestion': function(id) {
+        return QuestionModel.findById(id)
+            .then((data) => {
+                console.log(data);
+                return data.serialize();
+            })
+            .catch((err) => {
+                console.log(err);
+                return err;
+            });
+    },
     'getQuestions': function() {
         return QuestionModel.find()
             .then((data) => {

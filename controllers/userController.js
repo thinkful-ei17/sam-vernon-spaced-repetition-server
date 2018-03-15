@@ -11,7 +11,11 @@ const createLinkedListForDataField = function(questions) {
     const linkedList = new LinkedList();
 
     questions.forEach((question) => {
-        linkedList.insertFirst(question);
+        const { nValue, score, id } = question;
+
+        console.log('-------NVALUE, SCORE, ID--------', nValue, score, id);
+
+        linkedList.insertFirst({ id, nValue, score });
     });
 
     linkedList.display();
@@ -59,18 +63,47 @@ module.exports = {
                         })
                         .then((user) => {
                             console.log('created!?');
-                            console.log(user);
+                            // console.log(user);
 
                             let foundWordSet = user.wordSets.find((set) => set.name === wordSet);
 
-                            return foundWordSet.data.head.value;
+                            // fetch question w/ questionId in linkedList head value
+                            return dataController.getQuestion(foundWordSet.data.head.value.id)
+                                .then((question) => {
+                                    const { word, prompt, correctAnswer, incorrectAnswers, definition } = question;
+                                    const { nValue, score } = foundWordSet.data.head.value;
+
+                                    return {
+                                        word,
+                                        prompt,
+                                        correctAnswer,
+                                        incorrectAnswers,
+                                        definition,
+                                        nValue,
+                                        score
+                                    };
+                                })
                         });
 
                 }
 
                 // else: if foundWordSet was actually found
                 // its a linkedList w/ a head, nodes & values
-                return foundWordSet.data.head.value;
+                return dataController.getQuestion(foundWordSet.data.head.value.id)
+                    .then((question) => {
+                        const { word, prompt, correctAnswer, incorrectAnswers, definition } = question;
+                        const { nValue, score } = foundWordSet.data.head.value;
+
+                        return {
+                            word,
+                            prompt,
+                            correctAnswer,
+                            incorrectAnswers,
+                            definition,
+                            nValue,
+                            score
+                        };
+                    });
 
                 // return data.serialize();
             });
