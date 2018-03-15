@@ -7,6 +7,8 @@ const QuestionModel = require('../models/QuestionModel');
 const dataController = require('./dataController');
 const { LinkedList, removeHead, insertAt, insertLast, display, giveLength } = require('./linkedList');
 
+const masteryChecker = 4;
+
 const createLinkedListForDataField = function(questions) {
     const linkedList = new LinkedList();
 
@@ -76,6 +78,21 @@ module.exports = {
             });
 
     },
+    'getWordSet': function(wordSet, id) {
+        console.log('given name:', wordSet);
+
+        return UserModel.findById(id)
+            .then((user) => {
+
+                const foundWordSet = user.wordSets.find((set) => set.name === wordSet);
+
+                if (!foundWordSet) {
+                    throw new Error('No such word-set!');
+                }
+
+                return foundWordSet;
+            });
+    },
     'getWordSets': function(id) {
 
     },
@@ -115,7 +132,7 @@ module.exports = {
                     foundWordSet.data.head = insertAt(oldQuestion, foundWordSet.data.head);
 
                     // check when2change mastery when one oldQuestion reaches a score over 80
-                    if (oldQuestion.score > 4) {
+                    if (oldQuestion.score > masteryChecker) {
                         console.log('SCORE BIGGER ============');
                         this.updateMastery(foundWordSet);
                     }
@@ -230,7 +247,7 @@ module.exports = {
             total += 1;
 
             console.log('mastery, curr: ', current.value);
-            if(current.value.score > 4) {
+            if(current.value.score > masteryChecker) {
                 mastered += 1;
             }
 
