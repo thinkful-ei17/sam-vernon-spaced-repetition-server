@@ -83,15 +83,29 @@ module.exports = {
                 return err;
             });
     },
+    'deleteWordSet': function(wordSetId) {
+        return WordSetModel.findByIdAndRemove(wordSetId)
+            .then((response) => {
+                console.log(response);
+                return response;
+            });
+    },
     'deleteWordSets': function() {
         return WordSetModel.find()
             .then((data) => {
-                console.log(data); 
+                console.log(data);
                 return data.save();
             })
             .catch((err) => {
                 console.log(err);
                 return err;
+            });
+    },
+    'deleteQuestion': function(questionId) {
+        return QuestionModel.findByIdAndRemove(questionId)
+            .then((response) => {
+                console.log(response);
+                return response;
             });
     },
     'deleteQuestions': function() {

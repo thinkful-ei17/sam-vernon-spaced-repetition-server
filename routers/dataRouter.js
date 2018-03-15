@@ -62,10 +62,12 @@ dataRouter.post('/createWordSet', (req, res) => {
 });
 
 // delete a question
-dataRouter.delete('/questions/:id', (req, res) => {
-
+dataRouter.delete('/question/:id', (req, res) => {
     // not tested
-    databaseCalls.deleteQuestions()
+    
+    const { id } = req.params;
+
+    databaseCalls.deleteQuestion(id)
         .then((data) => {
             console.log(data);
             res.json(data);
@@ -92,10 +94,12 @@ dataRouter.delete('/questions', (req, res) => {
 });
 
 // delete a wordSet
-dataRouter.delete('/wordSets/:id', (req, res) => {
+dataRouter.delete('/wordSet/:id', (req, res) => {
     // not tested
 
-    databaseCalls.deleteWordSets()
+    const { id } = req.params;
+
+    databaseCalls.deleteWordSet(id)
         .then((data) => {
             console.log(data);
             res.json(data);
