@@ -73,7 +73,7 @@ userRouter.get('/wordSet', jwtAuth, (req, res) => {
 
 });
 
-//delete all wordsets of user
+// delete all wordsets of user
 userRouter.delete('/wordSets', jwtAuth, (req, res) => {
 
     const { id } = req.user;
