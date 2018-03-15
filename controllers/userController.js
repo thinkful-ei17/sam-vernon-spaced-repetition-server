@@ -94,7 +94,10 @@ module.exports = {
             });
     },
     'getWordSets': function(id) {
-
+        return UserModel.findById(id)
+            .then((user) => {
+                return user.serialize().wordSets;
+            });
     },
     'response': function(wordSet, answer, id) {
         return UserModel.findById(id)

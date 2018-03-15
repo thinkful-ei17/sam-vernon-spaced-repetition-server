@@ -84,6 +84,22 @@ userRouter.get('/wordSet', jwtAuth, (req, res) => {
 
 });
 
+// get all wordSets
+userRouter.get('/wordSets', jwtAuth, (req, res) => {
+
+    const { id } = req.user;
+
+    databaseCalls.getWordSets(id)
+        .then((data) => {
+            res.json(data);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.send(err.message);
+        });
+
+});
+
 // delete all wordsets of user
 userRouter.delete('/wordSets', jwtAuth, (req, res) => {
 
