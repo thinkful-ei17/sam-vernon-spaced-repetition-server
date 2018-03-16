@@ -126,14 +126,7 @@ loginRouter.post('/register', (req, res) => {
         })
         .then((user) => { // not using nodemon to watch changes keep eye on log!
 
-            return databaseCalls.getQuestion('Foundation', user.id)
-                .then((data) => {
-                    console.log('PRESET: FOUNDATION');
-                    console.log(data);
-                    return res.status(201).location(`/users/${user.id}`).json(user.serialize());
-                });
-            // before adding foundation to all new accounts
-            // return res.status(201).location(`/users/${user.id}`).json(user.serialize());
+            return res.status(201).json(user.serialize());
         })
         .catch((err) => {
             console.log(err);
