@@ -7,7 +7,7 @@ const QuestionModel = require('../models/QuestionModel');
 const dataController = require('./dataController');
 const { LinkedList, removeHead, insertAt, insertLast, display, giveLength } = require('./linkedList');
 
-const masteryChecker = 4;
+const masteryChecker = 2;
 
 const createLinkedListForDataField = function(questions) {
     const linkedList = new LinkedList();
