@@ -35,7 +35,11 @@ module.exports = {
         return UserModel.findById(id)
             .then((user) => {
 
-                const foundWordSet = user.wordSets.find((set) => set.name === wordSet);
+                const foundWordSet = user.wordSets.find((set) => {
+                    if (set) {
+                        return (set.name === wordSet);
+                    }
+                });
 
                 if (!foundWordSet) {
                     // get the wordSet
@@ -63,7 +67,11 @@ module.exports = {
                             // console.log('created!?');
                             // console.log(user);
 
-                            let foundWordSet = user.wordSets.find((set) => set.name === wordSet);
+                            let foundWordSet = user.wordSets.find((set) => {
+                                if (set) {
+                                    return (set.name === wordSet);
+                                }
+                            });
 
                             return foundWordSet.data.head.value;
                         });
@@ -103,7 +111,12 @@ module.exports = {
         return UserModel.findById(id)
             .then((user) => {
 
-                const foundWordSet = user.wordSets.find((set) => set.name === wordSet);
+                const foundWordSet = user.wordSets.find((set) => {
+                    if (set) {
+                        return set.name === wordSet;
+                    }
+                    return false;
+                });
 
                 if (!foundWordSet) {
                     throw new Error('No such word-set on user.');
@@ -180,7 +193,7 @@ module.exports = {
                 */
                 const newWordSets = user.wordSets.map((aSet) => {
                     // // console.log('bool statement: ', aSet.id === foundWordSet.id);
-                    if (aSet.id === foundWordSet.id) {
+                    if (aSet && aSet.id === foundWordSet.id) {
                         // console.log('Found it, so Im replacing it.');
 
                         const { name, data, description, mastery, id } = foundWordSet;
