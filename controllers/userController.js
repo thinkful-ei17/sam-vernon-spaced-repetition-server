@@ -147,7 +147,7 @@ module.exports = {
                     // LinkedList aka head = updatedVersion & im adding to the bottom
                     foundWordSet.data.head = insertAt(oldQuestion, foundWordSet.data.head);
 
-                    // check when2change mastery when one oldQuestion reaches a score over 80
+                    // check when2change mastery when one oldQuestion reaches a score over 2
                     this.updateMastery(foundWordSet);
 
                     // // console.log('===== after changes - if true =====');
@@ -176,7 +176,7 @@ module.exports = {
                     // LinkedList aka head = updatedVersion & im adding to the bottom
                     foundWordSet.data.head = insertAt(oldQuestion, foundWordSet.data.head);
 
-                    // check when2change mastery when one oldQuestion reaches a score over 80
+                    // check when2change mastery when one oldQuestion reaches a score over 2
                     this.updateMastery(foundWordSet);
 
                     // // console.log('===== after changes if false =====');
@@ -196,10 +196,9 @@ module.exports = {
                     if (aSet && aSet.id === foundWordSet.id) {
                         // console.log('Found it, so Im replacing it.');
 
-                        const { name, data, description, mastery, id } = foundWordSet;
+                        const { name, data, description, mastery } = foundWordSet;
 
                         return {
-                            id,
                             name,
                             data,
                             description,
