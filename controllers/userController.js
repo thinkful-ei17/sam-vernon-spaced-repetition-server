@@ -28,10 +28,6 @@ module.exports = {
             });
     },
     'getQuestion': function(wordSet, id) {
-        let description;
-        let name;
-        let questions;
-
         return UserModel.findById(id)
             .then((user) => {
 
@@ -42,10 +38,30 @@ module.exports = {
                 });
 
                 if (!foundWordSet) {
-                    // get the wordSet
+                    throw new Error('No such word-set!');
+                }
+
+                // else: if foundWordSet was actually found
+                // its a linkedList w/ a head, nodes & values
+                return foundWordSet.data.head.value;
+            });
+
+    },
+    'getWordSet': function(wordSet, id) {
+        // console.log('given name:', wordSet);
+        let description;
+        let name;
+        let questions;
+
+        return UserModel.findById(id)
+            .then((user) => {
+
+                let foundWordSet = user.wordSets.find((set) => set.name === wordSet);
+
+                if (!foundWordSet) {
                     return dataController.getWordSet(wordSet)
                         .then((aSet) => {
-                            // if it doesnt exist
+                        // if it doesnt exist
                             if (aSet.length === 0) {
                                 throw new Error('No such wordset');
                             }
@@ -58,46 +74,22 @@ module.exports = {
                             return dataController.getQuestionsById(aSet[ 0 ].data);
                         })
                         .then((questionsData) => {
-                            // console.log(questionsData);
+                        // console.log(questionsData);
                             questions = questionsData;
                             // create userWordSet
                             return this.createWordSet(name, description, questions, id);
                         })
-                        .then((user) => {
-                            // console.log('created!?');
-                            // console.log(user);
+                        .then((updatedUser) => {
+                        // console.log('created!?');
+                        // console.log(user);
 
-                            let foundWordSet = user.wordSets.find((set) => {
+                            foundWordSet = updatedUser.wordSets.find((set) => {
                                 if (set) {
                                     return (set.name === wordSet);
                                 }
                             });
-
-                            return foundWordSet.data.head.value;
                         });
-
                 }
-
-                // else: if foundWordSet was actually found
-                // its a linkedList w/ a head, nodes & values
-                return foundWordSet.data.head.value;
-
-                // return data.serialize();
-            });
-
-    },
-    'getWordSet': function(wordSet, id) {
-        // console.log('given name:', wordSet);
-
-        return UserModel.findById(id)
-            .then((user) => {
-
-                const foundWordSet = user.wordSets.find((set) => set.name === wordSet);
-
-                if (!foundWordSet) {
-                    throw new Error('No such word-set!');
-                }
-
                 return foundWordSet;
             });
     },
@@ -193,7 +185,7 @@ module.exports = {
                 */
                 const newWordSets = user.wordSets.map((aSet) => {
                     // // console.log('bool statement: ', aSet.id === foundWordSet.id);
-                    if (aSet && aSet.id === foundWordSet.id) {
+                    if (aSet.id === foundWordSet.id) {
                         // console.log('Found it, so Im replacing it.');
 
                         const { name, data, description, mastery } = foundWordSet;
@@ -205,8 +197,9 @@ module.exports = {
                             mastery
                         };
                     }
-
-
+                        
+                    return ({ aSet });
+                    
                 });
 
                 user.wordSets = newWordSets;
