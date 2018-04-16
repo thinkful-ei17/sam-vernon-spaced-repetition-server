@@ -2,11 +2,10 @@
 require('dotenv').config();
 
 const express = require('express');
-const cors = require('cors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
-const { PORT, CLIENT_ORIGIN } = require('./config');
+const { PORT } = require('./config');
 const { dbConnect } = require('./db-mongoose');
 
 const loginRouter = require('./routers/loginRouter');
@@ -16,13 +15,6 @@ const dataRouter = require('./routers/dataRouter');
 
 const app = express();
 
-// app.use(
-//     cors({
-//         origin: CLIENT_ORIGIN
-//     })
-// );
-
-app.use(cors());
 app.use(bodyParser.json());
 
 app.use(
