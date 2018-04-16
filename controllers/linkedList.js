@@ -197,106 +197,125 @@ class _Node {
     }
 }
 
-function size(linkedList) {
-    if (!linkedList.head) {
+const _findNthElement = function(position, head) {
+    let thisHead = head;
+
+    for (let i = 0; i < position; i++) {
+        if (thisHead.next) {
+            thisHead = thisHead.next;
+        }
+    }
+
+    return thisHead;
+};
+
+const insertAt = function(newValue, head) {
+
+    let tempHead = head;
+
+    if (!tempHead) {
         return null;
     }
 
-    let counter = 0;
-    let current = linkedList.head;
+    if (newValue.nValue < 0) {
+        throw new Error('Position error');
+    }
+
+    if (newValue.nValue === 0) {
+        let oldHead = tempHead;
+
+        tempHead = new _Node(newValue, oldHead);
+
+        return tempHead;
+    }
+
+    // Find the node which we want to insert after
+    const node = _findNthElement(newValue.nValue - 1, tempHead);
+    const newNode = new _Node(newValue, null);
+
+    // oldNode -> new -> oldNodeNEXT
+    newNode.next = node.next;
+    node.next = newNode;
+
+    return tempHead;
+
+};
+
+const insertLast = function(item, head) {
+    let tempHead = head;
+
+    if(tempHead === null) {
+        tempHead = new Node(item, null);
+    } else {
+        let current = tempHead;
+
+        while (current.next !== null) {
+            console.log('traversing...');
+            console.log('next', current.value);
+            current = current.next;
+        }
+
+        current.next = new _Node(item, null);
+    }
+
+    return tempHead;
+};
+
+const removeHead = function(head) {
+
+    if (head === null) {
+        return head;
+    } else if (head.next === null) {
+        return null;
+    }
+
+    let thisHead = head;
+
+    thisHead = head.next;
+    return thisHead;
+
+};
+
+const display = function(head) {
+    let tempHead = head;
+
+    if (!tempHead) {
+        return null;
+    }
+
+    const list = [];
+    let current = tempHead;
 
     while (current !== null) {
-        counter++;
+        list.push(current.value);
         current = current.next;
     }
-    console.log('Number of items in list:', counter);
-    return;
-}
+    console.log(list);
+};
 
-function isEmpty(linkedList) {
-    if (!linkedList.head) {
-        console.log('List is empty');
-        return;
-    }
-    console.log('List is not empty');
-    return;
-}
+const giveLength = function(head) {
+    let tempHead = head;
 
-function findPrevious(linkedList, item) {
-    if (!linkedList.head) {
+    if (!tempHead) {
         return null;
-    }
-    let current = linkedList.head;
-    let previous = linkedList.head;
-
-    while(current !== null) {
-        if(current.value === item) {
-            console.log('Previous node is:', previous);
-            return previous;
-        }
-        previous = current;
-        current = current.next;
-    }
-    console.log('Invalid item');
-    return;
-}
-
-function findLast(linkedList) {
-    if (!linkedList.head) {
-        return null;
-    }
-    let current = linkedList.head;
-
-    while (current.next !== null) {
-        current = current.next;
-    }
-
-    console.log('Last node in list:', current);
-    return current;
-}
-
-function insertAt(position, newValue) {
-    if(!this.head) {
-        return null;
-    }
-
-    if (position === 0) {
-        this.insertFirst(newValue);
-        return;
     }
 
     let counter = 0;
-    let current = this.head;
-    let previous = this.head;
+    let current = tempHead;
 
-    while(current !== null) {
-        if(counter === position) {
-            previous.next = new _Node(newValue, current);
-            return;
-        }
-        previous = current;
+    while (current !== null) {
+        counter += 1;
         current = current.next;
-        counter++;
-    }
-    console.log('Position was invalid');
-    return;
-}
-
-function removeHead() {
-    if (this.head === null) {
-        return null;
-    } else if (this.head.next === null) {
-        let oldHead = this.head;
-
-        this.head = null;
-        return oldHead.value;
     }
 
-    let oldHead = this.head;
+    return counter;
+};
 
-    this.head = this.head.next;
-    return oldHead.value;
-
-}
-
-module.exports = LinkedList;
+module.exports = {
+    LinkedList,
+    removeHead,
+    insertAt,
+    insertLast,
+    display,
+    giveLength
+};

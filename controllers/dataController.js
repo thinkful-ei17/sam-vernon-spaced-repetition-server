@@ -48,11 +48,13 @@ module.exports = {
                 return err;
             });
     },
-    'createQuestion': function(word, prompt, correctAnswer, incorrectAnswers) {
+    'createQuestion': function(word, prompt, correctAnswer, definition, nValue, incorrectAnswers) {
         return QuestionModel.create({
             word,
             prompt,
             correctAnswer,
+            definition,
+            nValue,
             incorrectAnswers
         })
             .then((data) => {
@@ -79,6 +81,39 @@ module.exports = {
             .catch((err) => {
                 console.log(err);
                 return err;
+            });
+    },
+    'deleteWordSet': function(wordSetId) {
+        return WordSetModel.findByIdAndRemove(wordSetId)
+            .then((response) => {
+                console.log(response);
+                return response;
+            });
+    },
+    'deleteWordSets': function() {
+        return WordSetModel.find()
+            .then((data) => {
+                console.log(data);
+                return data.save();
+            })
+            .catch((err) => {
+                console.log(err);
+                return err;
+            });
+    },
+    'deleteQuestion': function(questionId) {
+        return QuestionModel.findByIdAndRemove(questionId)
+            .then((response) => {
+                console.log(response);
+                return response;
+            });
+    },
+    'deleteQuestions': function() {
+        return QuestionModel.find()
+            .then((data) => {
+                data = [];
+
+                return data.save();
             });
     }
 };

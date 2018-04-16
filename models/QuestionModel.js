@@ -12,7 +12,8 @@ const QuestionSchema = mongoose.Schema({
         { 'type': String }
     ],
     'definition': { 'type': String, 'required': true },
-    'nValue': { 'type': Number, 'required': true }
+    'nValue': { 'type': Number, 'required': true, 'default': 1 },
+    'score': { 'type': Number, 'required': true, 'default': 0 }
 });
 
 QuestionSchema.methods.serialize = function() {
@@ -22,7 +23,10 @@ QuestionSchema.methods.serialize = function() {
         'word': this.word,
         'prompt': this.prompt,
         'correctAnswer': this.correctAnswer,
-        'incorrectAnswers': this.incorrectAnswers
+        'definition': this.definition,
+        'incorrectAnswers': this.incorrectAnswers,
+        'nValue': this.nValue,
+        'score': this.score
     };
 };
 
