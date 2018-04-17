@@ -32,8 +32,8 @@ module.exports = {
             .then((user) => {
 
                 const foundWordSet = user.wordSets.find((set) => {
-                    if (set) {
-                        return (set.name === wordSet);
+                    if (set.name === wordSet) {
+                        return set;
                     }
                 });
 
@@ -65,8 +65,6 @@ module.exports = {
                             if (aSet.length === 0) {
                                 throw new Error('No such wordset');
                             }
-                            // console.log(aSet);
-                            // console.log('==========wordSet data===========', aSet[ 0 ]);
                             name = aSet[ 0 ].name;
                             description = aSet[ 0 ].description;
 
@@ -80,17 +78,48 @@ module.exports = {
                             return this.createWordSet(name, description, questions, id);
                         })
                         .then((updatedUser) => {
-                        // console.log('created!?');
-                        // console.log(user);
-
-                            foundWordSet = updatedUser.wordSets.find((set) => {
-                                if (set) {
-                                    return (set.name === wordSet);
-                                }
-                            });
+                            return updatedUser;
                         });
                 }
-                return foundWordSet;
+                return user;
+                
+            });
+    },
+    'upsertWordSet': function(wordSet, id) {
+        let description;
+        let name;
+        let questions;
+
+        return UserModel.findById(id)
+            .then((user) => {
+
+                let foundWordSet = user.wordSets.find((set) => set.name === wordSet);
+
+                if (!foundWordSet) {
+                    return dataController.getWordSet(wordSet)
+                        .then((aSet) => {
+                        // if it doesnt exist
+                            if (aSet.length === 0) {
+                                throw new Error('No such wordset');
+                            }
+                            name = aSet[ 0 ].name;
+                            description = aSet[ 0 ].description;
+
+                            // get questions mentioned in wordSet
+                            return dataController.getQuestionsById(aSet[ 0 ].data);
+                        })
+                        .then((questionsData) => {
+                        // console.log(questionsData);
+                            questions = questionsData;
+                            // create userWordSet
+                            return this.createWordSet(name, description, questions, id);
+                        })
+                        .then((updatedUser) => {
+                            return updatedUser;
+                        });
+                }
+                return user;
+
             });
     },
     'getWordSets': function(id) {
@@ -104,8 +133,8 @@ module.exports = {
             .then((user) => {
 
                 const foundWordSet = user.wordSets.find((set) => {
-                    if (set) {
-                        return set.name === wordSet;
+                    if (set.name === wordSet) {
+                        return set;
                     }
                     return false;
                 });
@@ -115,12 +144,6 @@ module.exports = {
 
                 // logic to remove answered Question from foundWordSet & switch to a new one
                 } else if (answer) {
-                    // increment -- answer they gave is right!
-                    // console.log('======= ID: ', foundWordSet.id);
-
-                    // // console.log('===== before changes =====');
-                    // display(foundWordSet.data.head);
-                    // // console.log('===== before changes =====');
 
                     // saving oldQ for insertLast
                     const oldQuestion = foundWordSet.data.head.value;
@@ -142,16 +165,7 @@ module.exports = {
                     // check when2change mastery when one oldQuestion reaches a score over 2
                     this.updateMastery(foundWordSet);
 
-                    // // console.log('===== after changes - if true =====');
-                    // display(foundWordSet.data.head);
-                    // // console.log('===== after changes - if true =====');
-
                 } else {
-                    // decrement -- answer they gave is wrong!
-                    // // console.log('===== before changes =====');
-                    // display(foundWordSet.data.head);
-                    // // console.log('===== before changes =====');
-
                     // saving oldQ for insertLast
                     const oldQuestion = foundWordSet.data.head.value;
 
@@ -171,9 +185,6 @@ module.exports = {
                     // check when2change mastery when one oldQuestion reaches a score over 2
                     this.updateMastery(foundWordSet);
 
-                    // // console.log('===== after changes if false =====');
-                    // display(foundWordSet.data.head);
-                    // // console.log('===== after changes if false =====');
                 }
 
                 /*
@@ -203,31 +214,31 @@ module.exports = {
                 });
 
                 user.wordSets = newWordSets;
-                // console.log('NEW DATA.WORDSETS', JSON.stringify(newWordSets, null, 2));
 
                 return user.save();
             });
 
     },
     'createWordSet': function(name, description, questions, id) {
-        return UserModel.findById(id)
+        return UserModel.findByIdAndUpdate(
+            id,
+            {
+                '$push': {
+                    'wordSets': {
+                        name,
+                        'data': createLinkedListForDataField(questions),
+                        description,
+                        'mastery': 0,
+                        'score': 1
+                    }
+                }
+            },
+            { 'new': true }
+        )
             .then((user) => {
-                let newWordSet = {
-                    name,
-                    'data': createLinkedListForDataField(questions),
-                    description,
-                    'mastery': 0,
-                    'score': 1
-                };
-
-                // console.log('NEWWORDSET', newWordSet);
-                // console.log('response: ', user);
-                user.wordSets = [ ...user.wordSets, newWordSet ];
-
-                return user.save();
+                res.json(user);
             })
             .catch((err) => {
-                // console.log(err.message);
                 return err;
             });
     },
@@ -239,8 +250,6 @@ module.exports = {
             });
     },
     'updateMastery': function(wordSet) {
-        console.log('---------------curr mastery: ', wordSet.mastery);
-
         let total = 0;
         let mastered = 0;
         let current = wordSet.data.head;
@@ -248,18 +257,12 @@ module.exports = {
         // traverse thru data
         while (current != null) {
             total += 1;
-
-            console.log('mastery, curr: ', current.value);
             if(current.value.score > masteryChecker) {
                 mastered += 1;
             }
-
             current = current.next;
         }
 
-        console.log('-----------mastered, total----------', mastered, total);
-        wordSet.mastery = (mastered / total).toFixed(2) * 100;
-        console.log('----------wordset mastery', wordSet.mastery);
-
+        wordSet.mastery = Math.round((mastered / total).toFixed(2) * 100);
     }
 };

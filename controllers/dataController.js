@@ -29,7 +29,6 @@ module.exports = {
     'getWordSets': function() {
         return WordSetModel.find()
             .then((data) => {
-                console.log(data);
                 return data.map((wordSet) => wordSet.serialize());
             })
             .catch((err) => {
@@ -40,7 +39,6 @@ module.exports = {
     'getWordSet': function(name) {
         return WordSetModel.find({ name })
             .then((data) => {
-                console.log(data);
                 return data.map((wordSet) => wordSet.serialize());
             })
             .catch((err) => {

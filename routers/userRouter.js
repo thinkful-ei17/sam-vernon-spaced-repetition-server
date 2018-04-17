@@ -67,7 +67,23 @@ userRouter.post('/response', jwtAuth, (req, res) => {
 
 });
 
-// get specific wordSet to quiz on!
+// upsert specific wordSet to quiz on!
+userRouter.put('/wordSet', jwtAuth, (req, res) => {
+
+    const { wordSet } = req.query;
+    const { id } = req.user;
+
+    databaseCalls.upsertWordSet(wordSet, id)
+        .then((data) => {
+            res.json(data);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.send(err.message);
+        });
+
+});
+
 userRouter.get('/wordSet', jwtAuth, (req, res) => {
 
     const { wordSet } = req.query;
